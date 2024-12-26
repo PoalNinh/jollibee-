@@ -1222,13 +1222,35 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const photos = document.querySelectorAll('.photo');
-            photos.forEach(photo => {
-                photo.addEventListener('click', function () {
-                    if (this.src && this.style.display !== 'none') {
-                        showModal(this.src);
+            function addClickEvents() {
+                const photos = document.querySelectorAll('.photo');
+                photos.forEach(photo => {
+                    photo.addEventListener('click', function (e) {
+                        e.preventDefault(); // Prevent default click behavior
+                        if (this.src && this.style.display !== 'none') {
+                            const newTab = window.open('', '_blank');
+                            newTab.location.href = this.src;  // This behaves like "Open image in new tab"
+                        }
+                    });
+                    photo.style.cursor = 'pointer';
+                });
+            }
+
+            // Initial binding
+            addClickEvents();
+
+            // Add observer to handle dynamically added images
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.addedNodes.length) {
+                        addClickEvents();
                     }
                 });
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
             });
         });
 
