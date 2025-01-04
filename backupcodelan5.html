@@ -1119,37 +1119,50 @@
                 });
             },
 
-            updateImage: (imgId, imageUrl) => {
-                const $img = $(`#${imgId}`);
-                const $loading = $(`#loading-${imgId}`);
-                const $photoCell = $img.closest('.photo-cell');
 
-                if (!imageUrl) {
-                    $img.hide();
-                    $loading.hide();
-                    return;
-                }
-
-                $loading.show();
-                $photoCell.css('visibility', 'visible');
-
-                $img
-                    .on('error', function () {
-                        $(this).hide();
-                        $loading.hide();
-                    })
-                    .on('load', function () {
-                        $(this).show();
-                        $loading.hide();
-                        $(this).closest('.photo-cell').css({
-                            visibility: 'visible',
-                            height: 'auto'
-                        });
-                    })
-                    .attr('src', imageUrl);
-            }
         };
 
+        // Update the image handling function
+        domUpdater.updateImage = (imgId, imageUrl) => {
+            const $img = $(`#${imgId}`);
+            const $loading = $(`#loading-${imgId}`);
+            const $photoCell = $img.closest('.photo-cell');
+
+            if (!imageUrl) {
+                $img.hide();
+                $loading.hide();
+                return;
+            }
+
+            $loading.show();
+            $photoCell.css('visibility', 'visible');
+
+            // Create a wrapper with link
+            if (!$img.parent().is('a')) {
+                $img.wrap(`<a href="${imageUrl}" target="_blank"></a>`);
+            }
+
+            $img
+                .on('error', function () {
+                    $(this).hide();
+                    $loading.hide();
+                })
+                .on('load', function () {
+                    $(this).show();
+                    $loading.hide();
+                    $(this).closest('.photo-cell').css({
+                        visibility: 'visible',
+                        height: 'auto'
+                    });
+                })
+                .attr('src', imageUrl)
+                .css('cursor', 'pointer');
+
+            // Update the wrapper href
+            $img.parent('a').attr('href', imageUrl);
+        };
+
+        // Add this to your printPDF function
         function printPDF() {
             const reportId = utils.getUrlParameter('reportId');
             if (!reportId) {
