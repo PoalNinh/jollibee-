@@ -745,10 +745,9 @@
                 const cleanFileName = fileName.trim();
                 const baseUrl = 'https://www.appsheet.com/template/gettablefileurl';
                 const params = new URLSearchParams({
-                    appName: CONFIG.api.appId,
+                    appName: "JolliBeeAudit-6196158",
                     tableName: 'IssueTracking',
-                    fileName: cleanFileName,
-                    applicationAccessKey: CONFIG.api.accessKey
+                    fileName: cleanFileName
                 });
                 return `${baseUrl}?${params.toString()}`;
             },
@@ -1048,6 +1047,8 @@
                                 photoCell.style.display = 'none';
                                 photoCell.style.visibility = 'hidden';
                             }
+                            // Ẩn section header khi không có nội dung và hình ảnh
+                            section.header.style.display = 'none';
                         }
 
                         // Điều chỉnh chiều cao photo cell
@@ -1067,9 +1068,9 @@
             },
 
             updateSignatures: (data) => {
-                $('#approvedBy').text(data['Approved by'] || '');
+                $('#approvedBy').text(data['Approved by name'] || '');
                 $('#storeManager').text(data['Store Manager'] || '');
-                $('#preparedBy').text(data['Prepared by'] || '');
+                $('#preparedBy').text(data['Prepared by name'] || '');
             },
 
             updateIssueTracking: (issues) => {
@@ -1241,8 +1242,7 @@
                     photo.addEventListener('click', function (e) {
                         e.preventDefault(); // Prevent default click behavior
                         if (this.src && this.style.display !== 'none') {
-                            const newTab = window.open('', '_blank');
-                            newTab.location.href = this.src;  // This behaves like "Open image in new tab"
+                            window.location.href = this.src;  // Mở hình trong tab hiện tại
                         }
                     });
                     photo.style.cursor = 'pointer';
@@ -1267,40 +1267,7 @@
             });
         });
 
-        closeBtn.onclick = function () {
-            modal.style.display = 'none';
-        }
 
-        modal.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape' && modal.style.display === 'block') {
-                modal.style.display = 'none';
-            }
-        });
-
-        document.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-        }, false);
-
-        document.onkeydown = function (e) {
-            if (e.keyCode == 123) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-                return false;
-            }
-        };
     </script>
 </body>
 
