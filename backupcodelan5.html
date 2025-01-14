@@ -29,10 +29,22 @@
             color: #333;
         }
 
+        table {
+            border-collapse: collapse;
+        }
+
+        /* Xóa tất cả các định nghĩa border khác trong các class cụ thể */
+        .header-table td,
+        .store-info-table td,
+        .general_Comment td,
+        .section-table td {
+            border: 0.5px solid #24232373;
+        }
+
         /* Page Container */
         .page {
             width: 21cm;
-            min-height: 29.7cm;
+            height: auto;
             padding: 1cm;
             margin: 1cm auto;
             background: white;
@@ -104,24 +116,35 @@
         }
 
         /* Tables Styling */
+        /* .signature-table, */
         .header-table,
         .store-info-table,
         .content-table,
-        .signature-table,
         .general_Comment {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
 
+        .general_Comment {
+            margin-top: 20px;
+        }
+
+        /* .signature-table td, */
         .header-table td,
         .store-info-table td,
-        .content-table th,
         .content-table td,
-        .signature-table td {
+        .content-table th,
+        .general_Comment td {
             border: 1px solid #24232373;
             padding: 3px;
             vertical-align: middle;
+        }
+
+        .content-table td {
+            padding: 3px;
+            vertical-align: middle;
+            white-space: pre-line;
         }
 
         .general_Comment td {
@@ -160,16 +183,79 @@
             width: 30%;
         }
 
+        /* Điều chỉnh border cho bảng section */
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
         /* Content Table */
         .section-header {
             background-color: #cce5ff;
             font-weight: bold;
         }
 
+        .content-section {
+            vertical-align: top;
+            height: 100%;
+        }
+
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            height: 100%;
+            /* Add this */
+            display: table;
+            border: none;
+            /* Add this */
+        }
+
+        .content-section table tbody {
+
+            border: none !important;
+            /* Add this */
+        }
+
+        .content-section table tr {
+            height: 100%;
+            /* Add this */
+        }
+
+        .content-section table td {
+            vertical-align: middle;
+        }
+
+        .no-col {
+            width: 5%;
+        }
+
+        .item-col {
+            width: 35%;
+        }
+
+        .status-col {
+            width: 40%;
+        }
+
+        /* Điều chỉnh cho phần photo */
+        .photo-section {
+            width: 20%;
+            padding: 4px;
+            vertical-align: top;
+        }
+
+        /* Điều chỉnh header section */
+        .section-header td {
+            background-color: #cce5ff;
+            font-weight: bold;
+            padding: 4px;
+        }
+
+        /* Điều chỉnh style cho ảnh */
         .photo {
             max-width: 100%;
-            height: auto;
-            display: none;
+            margin-bottom: 8px;
         }
 
         /* Image Loading Indicator */
@@ -182,22 +268,22 @@
         }
 
         /* Signature Table */
-        .signature-table {
-            margin-top: 40px;
-        }
+        /* .signature-table {
+                margin-top: 40px;
+            }
 
-        .signature-table td {
-            width: 33.33%;
-            height: 100px;
-            text-align: center;
-            vertical-align: top;
-        }
+            .signature-table td {
+                width: 33.33%;
+                height: 100px;
+                text-align: center;
+                vertical-align: top;
+            }
 
-        .signature-table tr:first-child td {
-            background-color: #cce5ff;
-            height: auto;
-            font-weight: bold;
-        }
+            .signature-table tr:first-child td {
+                background-color: #cce5ff;
+                height: auto;
+                font-weight: bold;
+            } */
 
         /* Print Styles */
         @media print {
@@ -340,8 +426,7 @@
         <table class="header-table">
             <tr>
                 <td style="width: 15%;">
-                    <img src="https://www.appsheet.com:443/fsimage.png?appid=9e857529-b31a-4452-9791-f3f10b95aaad&datasource=google&filename=DocId%3D1xPgEGCz-OsOzyc7n4he3hUB4D89x6Q3d&signature=381bb6801eb6c95b6bfbf5cebc7c1ab5fce29968ee4790588862262c6a632cdc&tableprovider=google&userid=6196158"
-                        alt="Company Logo" class="logo">
+                    <img src="https://poalninh.github.io/jollibee-/pngegg.png" alt="Company Logo" class="logo">
                 </td>
                 <td style="width: 60%;">
                     <div class="title">TRADE MARKETING VISIT REPORT</div>
@@ -369,241 +454,348 @@
             </tr>
         </table>
 
-        <!-- Content Table -->
-        <table class="content-table">
-            <tr class="section-header">
-                <th>No</th>
-                <th>Item</th>
-                <th>Status/Assessment</th>
-                <th>Photo</th>
-            </tr>
+        <!-- Section 1 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td style="width: 5%;">No</td>
+                    <td style="width: 35%;">Item</td>
+                    <td style="width: 40%;">Status/Assessment</td>
+                    <td style="width: 20%;">Photo</td>
+                </tr>
+                <tr class="section-header">
+                    <td colspan="4">1. Business Performance: Average daily sales/Current store's business status</td>
+                </tr>
+            </table>
 
-            <!-- Business Performance Section -->
-            <tr class="section-header">
-                <td>1</td>
-                <td colspan="3"><span id="B1"></span>: Average daily sales/ Current store's business status</td>
-            </tr>
-            <tr>
-                <td>1.1</td>
-                <td id="B101"></td>
-                <td id="section1-1">-</td>
-                <td rowspan="3" class="photo-cell">
-                    <div id="loading-pic1-1" class="image-loading">Loading image...</div>
-                    <img id="pic1-1" alt="Business Performance Photo 1" class="photo">
-                    <div id="loading-pic1-2" class="image-loading">Loading image...</div>
-                    <img id="pic1-2" alt="Business Performance Photo 2" class="photo" style="margin-top: 10px;">
-                </td>
-            </tr>
-            <tr>
-                <td>1.2</td>
-                <td id="B102"></td>
-                <td id="section1-2">-</td>
-            </tr>
-            <tr>
-                <td>1.3</td>
-                <td id="B103"></td>
-                <td id="section1-3">-</td>
-            </tr>
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">1.1</td>
+                                <td class="item-col" id="B101">ADS</td>
+                                <td class="status-col" id="section1-1">ADS tăng trưởng 3% vs LY</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">1.2</td>
+                                <td class="item-col" id="B102">ADTC</td>
+                                <td class="status-col" id="section1-2">ADTC tăng trưởng 1% vs LY</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">1.3</td>
+                                <td class="item-col" id="B103">AC</td>
+                                <td class="status-col" id="section1-3">AC= 103k</td>
+                            </tr>
+                        </table>
+                    </td>
 
-            <!-- Channel Check Section -->
-            <tr class="section-header">
-                <td>2</td>
-                <td colspan="3"><span id="C2"></span>: Average daily sales/ Current store's business status</td>
-            </tr>
-            <tr>
-                <td>2.1</td>
-                <td id="C201"></td>
-                <td id="section2-1">-</td>
-                <td rowspan="5" class="photo-cell">
-                    <div id="loading-pic2-1" class="image-loading">Loading image...</div>
-                    <img id="pic2-1" alt="Channel Check Photo 1" class="photo">
-                    <div id="loading-pic2-2" class="image-loading">Loading image...</div>
-                    <img id="pic2-2" alt="Channel Check Photo 2" class="photo" style="margin-top: 10px;">
-                </td>
-            </tr>
-            <tr>
-                <td>2.2</td>
-                <td id="C202"></td>
-                <td id="section2-2">-</td>
-            </tr>
-            <tr>
-                <td>2.3</td>
-                <td id="C203"></td>
-                <td id="section2-3">-</td>
-            </tr>
-            <tr>
-                <td>2.4</td>
-                <td id="C204"></td>
-                <td id="section2-4">-</td>
-            </tr>
-            <tr>
-                <td>2.5</td>
-                <td id="C205"></td>
-                <td id="section2-5">-</td>
-            </tr>
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section1-photos">
+                            <div id="loading-pic1-1" class="image-loading">Loading...</div>
+                            <img id="pic1-1" class="photo" alt="Business Performance Photo 1">
+                            <div id="loading-pic1-2" class="image-loading">Loading...</div>
+                            <img id="pic1-2" class="photo" alt="Business Performance Photo 2">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-            <!-- AEC Implementation Section -->
-            <tr class="section-header">
-                <td>3</td>
-                <td colspan="3"><span id="A3"></span>: Quantity & quality check/ Execution check</td>
-            </tr>
-            <tr>
-                <td>3.1</td>
-                <td id="A301"></td>
-                <td id="section3-1">-</td>
-                <td rowspan="14" class="photo-cell">
-                    <div id="loading-pic3-1" class="image-loading">Loading image...</div>
-                    <img id="pic3-1" alt="AEC Implementation Photo 1" class="photo">
-                    <div id="loading-pic3-2" class="image-loading">Loading image...</div>
-                    <img id="pic3-2" alt="AEC Implementation Photo 2" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic3-3" class="image-loading">Loading image...</div>
-                    <img id="pic3-3" alt="AEC Implementation Photo 3" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic3-4" class="image-loading">Loading image...</div>
-                    <img id="pic3-4" alt="AEC Implementation Photo 4" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic3-5" class="image-loading">Loading image...</div>
-                    <img id="pic3-5" alt="AEC Implementation Photo 5" class="photo" style="margin-top: 10px;">
-                </td>
-            </tr>
-            <tr>
-                <td>3.2</td>
-                <td id="A302"></td>
-                <td id="section3-2">-</td>
-            </tr>
-            <tr>
-                <td>3.3</td>
-                <td id="A303"></td>
-                <td id="section3-3">-</td>
-            </tr>
-            <tr>
-                <td>3.4</td>
-                <td id="A304"></td>
-                <td id="section3-4">-</td>
-            </tr>
-            <tr>
-                <td>3.5</td>
-                <td id="A305"></td>
-                <td id="section3-5">-</td>
-            </tr>
-            <tr>
-                <td>3.6</td>
-                <td id="A306"></td>
-                <td id="section3-6">-</td>
-            </tr>
-            <tr>
-                <td>3.7</td>
-                <td id="A307"></td>
-                <td id="section3-7">-</td>
-            </tr>
-            <tr>
-                <td>3.8</td>
-                <td id="A308"></td>
-                <td id="section3-8">-</td>
-            </tr>
-            <tr>
-                <td>3.9</td>
-                <td id="A309"></td>
-                <td id="section3-9">-</td>
-            </tr>
-            <tr>
-                <td>3.10</td>
-                <td id="A310"></td>
-                <td id="section3-10">-</td>
-            </tr>
-            <tr>
-                <td>3.11</td>
-                <td id="A311"></td>
-                <td id="section3-11">-</td>
-            </tr>
-            <tr>
-                <td>3.12</td>
-                <td id="A312"></td>
-                <td id="section3-12">-</td>
-            </tr>
-            <tr>
-                <td>3.13</td>
-                <td id="A313"></td>
-                <td id="section3-13">-</td>
-            </tr>
-            <tr>
-                <td>3.14</td>
-                <td id="A314"></td>
-                <td id="section3-14">-</td>
-            </tr>
+        <!-- Section 2 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">2. Channel Check: Average daily sales/Current store's business status</td>
+                </tr>
+            </table>
 
-            <tr class="section-header">
-                <td>4</td>
-                <td colspan="3"> <span id="T4"></span>: Frequency? How? Execution check? Performance?</td>
-            </tr>
-            <tr>
-                <td>4.1</td>
-                <td id="T401"></td>
-                <td id="section4-1">-</td>
-                <td rowspan="4" class="photo-cell">
-                    <div id="loading-pic4-1" class="image-loading">Loading image...</div>
-                    <img id="pic4-1" alt="Additional Comments Photo 1" class="photo">
-                    <div id="loading-pic4-2" class="image-loading">Loading image...</div>
-                    <img id="pic4-2" alt="Additional Comments Photo 2" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic4-3" class="image-loading">Loading image...</div>
-                    <img id="pic4-3" alt="Additional Comments Photo 3" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic4-4" class="image-loading">Loading image...</div>
-                    <img id="pic4-4" alt="Additional Comments Photo 4" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic4-5" class="image-loading">Loading image...</div>
-                    <img id="pic4-5" alt="Additional Comments Photo 5" class="photo" style="margin-top: 10px;">
-                </td>
-            </tr>
-            <tr>
-                <td>4.2</td>
-                <td id="T402"></td>
-                <td id="section4-2">-</td>
-            </tr>
-            <tr>
-                <td>4.3</td>
-                <td id="T403"></td>
-                <td id="section4-3">-</td>
-            </tr>
-            <tr>
-                <td>4.4</td>
-                <td id="T404"></td>
-                <td id="section4-4">-</td>
-            </tr>
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">2.1</td>
+                                <td class="item-col" id="C201">Dine-in</td>
+                                <td class="status-col" id="section2-1">Kênh DI chủ lực</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">2.2</td>
+                                <td class="item-col" id="C202">Delivery</td>
+                                <td class="status-col" id="section2-2"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">2.3</td>
+                                <td class="item-col" id="C203">Internal Delivery</td>
+                                <td class="status-col" id="section2-3">App JBVN tăng trưởng tốt thông qua hoạt động tải
+                                    App</td>
+                            </tr>
+                        </table>
+                    </td>
 
-            <tr class="section-header">
-                <td>5</td>
-                <td colspan="3"><span id="R5"></span>: Frequency? How? Execution check? Performance?</td>
-            </tr>
-            <tr>
-                <td>5.1</td>
-                <td id="R501"></td>
-                <td id="section5-1">-</td>
-                <td rowspan="4" class="photo-cell">
-                    <div id="loading-pic5-1" class="image-loading">Loading image...</div>
-                    <img id="pic5-1" alt="Recommendations Photo 1" class="photo">
-                    <div id="loading-pic5-2" class="image-loading">Loading image...</div>
-                    <img id="pic5-2" alt="Recommendations Photo 2" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic5-3" class="image-loading">Loading image...</div>
-                    <img id="pic5-3" alt="Recommendations Photo 3" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic5-4" class="image-loading">Loading image...</div>
-                    <img id="pic5-4" alt="Recommendations Photo 4" class="photo" style="margin-top: 10px;">
-                    <div id="loading-pic5-5" class="image-loading">Loading image...</div>
-                    <img id="pic5-5" alt="Recommendations Photo 5" class="photo" style="margin-top: 10px;">
-                </td>
-            </tr>
-            <tr>
-                <td>5.2</td>
-                <td id="R502"></td>
-                <td id="section5-2">-</td>
-            </tr>
-            <tr>
-                <td>5.3</td>
-                <td id="R503"></td>
-                <td id="section5-3">-</td>
-            </tr>
-            <tr>
-                <td>5.4</td>
-                <td id="R504"></td>
-                <td id="section5-4">-</td>
-            </tr>
-        </table>
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section2-photos">
+                            <div id="loading-pic2-1" class="image-loading">Loading...</div>
+                            <img id="pic2-1" class="photo" alt="Channel Check Photo 1">
+                            <div id="loading-pic2-2" class="image-loading">Loading...</div>
+                            <img id="pic2-2" class="photo" alt="Channel Check Photo 2">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">3. Product Quality: Average daily sales/Current store's business status</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">3.1</td>
+                                <td class="item-col" id="P301">Burger</td>
+                                <td class="status-col
+                                    " id="section3-1">Burger ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.2</td>
+                                <td class="item-col" id="P302">Chicken</td>
+                                <td class="status-col
+                                    " id="section3-2">Gà ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.3</td>
+                                <td class="item-col" id="P303">Pasta</td>
+                                <td class="status-col
+                                    " id="section3-3">Pasta ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.4</td>
+                                <td class="item-col" id="P304">Dessert</td>
+                                <td class="status-col
+                                    " id="section3-4">Dessert ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.5</td>
+                                <td class="item-col" id="P305">Drink</td>
+                                <td class="status-col
+                                    " id="section3-5">Drink ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.6</td>
+                                <td class="item-col" id="P306">Fries</td>
+                                <td class="status-col
+                                    " id="section3-6">Khoai tây ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.7</td>
+                                <td class="item-col" id="P307">Sauce</td>
+                                <td class="status-col
+                                    " id="section3-7">Sốt ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.8</td>
+                                <td class="item-col" id="P308">Packaging</td>
+                                <td class="status-col
+                                    " id="section3-8">Bao bì đẹp</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.9</td>
+                                <td class="item-col" id="P309">Price</td>
+                                <td class="status-col
+                                    " id="section3-9">Giá cả hợp lý</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.10</td>
+                                <td class="item-col" id="P310">Promotion</td>
+                                <td class="status-col
+                                    " id="section3-10">Khuyến mãi hấp dẫn</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.11</td>
+                                <td class="item-col" id="P311">Menu</td>
+                                <td class="status-col
+                                    " id="section3-11">Menu đa dạng</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.12</td>
+                                <td class="item-col" id="P312">Combo</td>
+                                <td class="status-col
+                                    " id="section3-12">Combo hấp dẫn</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.13</td>
+                                <td class="item-col" id="P313">Quality</td>
+                                <td class="status-col
+                                    " id="section3-13">Chất lượng tốt</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.14</td>
+                                <td class="item-col" id="P314">Freshness</td>
+                                <td class="status-col
+                                    " id="section3-14">Tươi mới</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+
+                    <td class="photo-section">
+                        <div id="section3-photos">
+                            <div id="loading-pic3-1" class="image-loading">Loading...</div>
+                            <img id="pic3-1" class="photo" alt="Product Quality Photo 1">
+                            <div id="loading-pic3-2" class="image-loading">Loading...</div>
+                            <img id="pic3-2" class="photo" alt="Product Quality Photo 2">
+                            <div id="loading-pic3-3" class="image-loading">Loading...</div>
+                            <img id="pic3-3" class="photo" alt="Product Quality Photo 3">
+                            <div id="loading-pic3-4" class="image-loading">Loading...</div>
+                            <img id="pic3-4" class="photo" alt="Product Quality Photo 4">
+                            <div id="loading-pic3-5" class="image-loading">Loading...</div>
+                            <img id="pic3-5" class="photo" alt="Product Quality Photo 5">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">4. Service Quality: Average daily sales/Current store's business status</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">4.1</td>
+                                <td class="item-col" id="S401">Service</td>
+                                <td class="status-col
+                                    " id="section4-1">Service tốt</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">4.2</td>
+                                <td class="item-col" id="S402">Cleanliness</td>
+                                <td class="status-col
+                                    " id="section4-2">Sạch sẽ</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">4.3</td>
+                                <td class="item-col" id="S403">Speed</td>
+                                <td class="status-col
+                                    " id="section4-3">Nhanh chóng</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">4.4</td>
+                                <td class="item-col" id="S404">Accuracy</td>
+                                <td class="status-col
+                                    " id="section4-4">Chính xác</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section4-photos">
+                            <div id="loading-pic4-1" class="image-loading">Loading...</div>
+                            <img id="pic4-1" class="photo" alt="Service Quality Photo 1">
+                            <div id="loading-pic4-2" class="image-loading">Loading...</div>
+                            <img id="pic4-2" class="photo" alt="Service Quality Photo 2">
+                            <div id="loading-pic4-3" class="image-loading">Loading...</div>
+                            <img id="pic4-3" class="photo" alt="Service Quality Photo 3">
+                            <div id="loading-pic4-4" class="image-loading">Loading...</div>
+                            <img id="pic4-4" class="photo" alt="Service Quality Photo 4">
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- Section 5 -->
+
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">5. Hygiene & Safety: Average daily sales/Current store's business status</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">5.1</td>
+                                <td class="item-col" id="H501">Hygiene</td>
+                                <td class="status-col
+                                    " id="section5-1">Vệ sinh tốt</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">5.2</td>
+                                <td class="item-col" id="H502">Safety</td>
+                                <td class="status-col
+                                    " id="section5-2">An toàn</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">5.3</td>
+                                <td class="item-col" id="H503">Social Distancing</td>
+                                <td class="status-col
+                                    " id="section5-3">Giữ khoảng cách</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">5.4</td>
+                                <td class="item-col" id="H504">PPE</td>
+                                <td class="status-col
+                                    " id="section5-4">Đủ PPE</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section5-photos">
+                            <div id="loading-pic5-1" class="image-loading">Loading...</div>
+                            <img id="pic5-1" class="photo" alt="Hygiene & Safety Photo 1">
+                            <div id="loading-pic5-2" class="image-loading">Loading...</div>
+                            <img id="pic5-2" class="photo" alt="Hygiene & Safety Photo 2">
+                            <div id="loading-pic5-3" class="image-loading">Loading...</div>
+                            <img id="pic5-3" class="photo" alt="Hygiene & Safety Photo 3">
+                            <div id="loading-pic5-4" class="image-loading">Loading...</div>
+                            <img id="pic5-4" class="photo" alt="Hygiene & Safety Photo 4">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
 
         <table class="general_Comment">
             <tr>
@@ -619,6 +811,7 @@
             <span style="font-weight: bold;">Diagnosis & Suggestion </span>
             <tr class="section-header">
                 <th style="width: 5%;">No</th>
+                <th style="width: 15%;">Item</th>
                 <th style="width: 25%;">Finding</th>
                 <th style="width: 15%;">Photo</th>
                 <th style="width: 30%;">Action Plan</th>
@@ -631,21 +824,41 @@
         </table>
 
         <!-- Signatures Table -->
-        <table class="signature-table">
-            <tr>
-                <td>Approved by:</td>
-                <td>Store Manager</td>
-                <td>Prepared by:</td>
-            </tr>
-            <tr>
-                <td id="approvedBy">-</td>
-                <td id="storeManager">-</td>
-                <td id="preparedBy">-</td>
-            </tr>
-        </table>
+        <!-- <table class="signature-table">
+                <tr>
+                    <td>Approved by:</td>
+                    <td>Store Manager</td>
+                    <td>Prepared by:</td>
+                </tr>
+                <tr>
+                    <td id="approvedBy">-</td>
+                    <td id="storeManager">-</td>
+                    <td id="preparedBy">-</td>
+                </tr>
+            </table> -->
     </div>
 
     <script>
+
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        }, false);
+
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+        };
+
         // Configuration
         const CONFIG = {
             api: {
@@ -676,6 +889,40 @@
                 return atob(encryptedId.split('').reverse().join(''));
             } catch {
                 return '';
+            }
+        }
+
+        // Hàm xử lý nội dung
+        function updateContent(sectionId, data) {
+            // Cập nhật text content
+            for (let i = 1; i <= 5; i++) {
+                const elementId = `section${sectionId}-${i}`;
+                const content = data[`${sectionId}.${i}`];
+                if (content) {
+                    document.getElementById(elementId).textContent = content;
+                }
+            }
+        }
+
+        // Hàm xử lý ảnh
+        function updatePhotos(sectionId, data) {
+            // Cập nhật photos
+            for (let i = 1; i <= 2; i++) {
+                const imgId = `pic${sectionId}-${i}`;
+                const loadingId = `loading-${imgId}`;
+                const imageUrl = data[`Pic${sectionId}.${i}`];
+
+                if (imageUrl) {
+                    const img = document.getElementById(imgId);
+                    const loading = document.getElementById(loadingId);
+
+                    loading.style.display = 'block';
+                    img.onload = function () {
+                        this.style.display = 'block';
+                        loading.style.display = 'none';
+                    };
+                    img.src = imageUrl;
+                }
             }
         }
 
@@ -950,118 +1197,6 @@
                 const formattedComment = (data['General Comment'] || '').replace(/\r?\n/g, '<br>');
                 $('#generalComment').html(formattedComment);
 
-                // Ẩn các dòng trống và điều chỉnh chiều cao
-                const hideEmptyRows = () => {
-                    const sections = Array.from(document.querySelectorAll('.content-table tr.section-header')).map(header => {
-                        const rows = [];
-                        let next = header.nextElementSibling;
-                        while (next && !next.classList.contains('section-header')) {
-                            rows.push(next);
-                            next = next.nextElementSibling;
-                        }
-                        return { header, rows };
-                    });
-
-                    sections.forEach(section => {
-                        if (!section.rows || section.rows.length === 0) return;
-
-                        const firstRow = section.rows[0];
-                        const photoCell = firstRow ? firstRow.querySelector('.photo-cell') : null;
-                        let hasImages = false;
-                        let hasContent = false;
-                        let visibleRows = 0;
-
-                        // Kiểm tra có hình ảnh hay không
-                        if (photoCell) {
-                            const images = photoCell.querySelectorAll('img');
-                            hasImages = Array.from(images).some(img => {
-                                return img.src && img.src !== 'about:blank' && img.src !== window.location.href;
-                            });
-                        }
-
-                        // Đếm số dòng có nội dung và đánh dấu có content
-                        section.rows.forEach(row => {
-                            const statusCell = row.querySelector('[id^="section"]');
-                            if (statusCell) {
-                                const content = statusCell.textContent.trim();
-                                if (content !== '' && content !== '-') {
-                                    hasContent = true;
-                                    visibleRows++;
-                                }
-                            }
-                        });
-
-                        if (hasImages) {
-                            // Nếu có hình ảnh
-                            if (photoCell) {
-                                photoCell.style.display = 'table-cell';
-                                photoCell.style.visibility = 'visible';
-                                // Nếu có cả nội dung, set rowspan bằng số dòng có nội dung
-                                if (hasContent) {
-                                    photoCell.setAttribute('rowspan', visibleRows.toString());
-                                } else {
-                                    // Nếu chỉ có hình không có nội dung, chỉ hiển thị 1 dòng
-                                    photoCell.setAttribute('rowspan', '1');
-                                }
-                            }
-
-                            // Hiển thị các dòng có nội dung hoặc dòng đầu nếu chỉ có hình
-                            let shownFirstRow = false;
-                            section.rows.forEach(row => {
-                                const statusCell = row.querySelector('[id^="section"]');
-                                if (statusCell) {
-                                    const content = statusCell.textContent.trim();
-                                    if (content !== '' && content !== '-') {
-                                        row.style.display = '';
-                                    } else if (!hasContent && !shownFirstRow) {
-                                        row.style.display = '';
-                                        shownFirstRow = true;
-                                    } else {
-                                        row.style.display = 'none';
-                                    }
-                                }
-                            });
-
-                        } else if (hasContent) {
-                            // Nếu không có hình nhưng có nội dung
-                            if (photoCell) {
-                                photoCell.style.display = 'table-cell'; // Vẫn hiển thị ô trống
-                                photoCell.style.visibility = 'visible';
-                                photoCell.setAttribute('rowspan', visibleRows.toString());
-                            }
-
-                            // Chỉ hiển thị các dòng có nội dung
-                            section.rows.forEach(row => {
-                                const statusCell = row.querySelector('[id^="section"]');
-                                if (statusCell) {
-                                    const content = statusCell.textContent.trim();
-                                    row.style.display = (content !== '' && content !== '-') ? '' : 'none';
-                                }
-                            });
-                        } else {
-                            // Không có cả hình lẫn nội dung
-                            section.rows.forEach(row => {
-                                row.style.display = 'none';
-                            });
-                            if (photoCell) {
-                                photoCell.style.display = 'none';
-                                photoCell.style.visibility = 'hidden';
-                            }
-                            // Ẩn section header khi không có nội dung và hình ảnh
-                            section.header.style.display = 'none';
-                        }
-
-                        // Điều chỉnh chiều cao photo cell
-                        if (photoCell && (hasImages || hasContent)) {
-                            const minHeight = 120;
-                            const rowHeight = 40;
-                            const totalRows = Math.max(visibleRows, 1);
-                            const totalHeight = Math.max(minHeight, rowHeight * totalRows);
-                            photoCell.style.height = `${totalHeight}px`;
-                        }
-                    });
-                };
-
                 // Gọi hàm ẩn dòng trống
                 hideEmptyRows();
                 setTimeout(hideEmptyRows, 500);
@@ -1087,28 +1222,29 @@
                     if (photo1) {
                         const imgId1 = `issue-img-${index}-1`;
                         photoCell.append(`
-                            <div id="loading-${imgId1}" class="image-loading">Loading image...</div>
-                            <img id="${imgId1}" src="" alt="Issue Photo 1" class="photo">
-                        `);
+                                <div id="loading-${imgId1}" class="image-loading">Loading image...</div>
+                                <img id="${imgId1}" src="" alt="Issue Photo 1" class="photo">
+                            `);
                     }
 
                     if (photo2) {
                         const imgId2 = `issue-img-${index}-2`;
                         photoCell.append(`
-                            <div id="loading-${imgId2}" class="image-loading">Loading image...</div>
-                            <img id="${imgId2}" src="" alt="Issue Photo 2" 
-                                 class="photo" style="${photo1 ? 'margin-top: 10px;' : ''}">
-                        `);
+                                <div id="loading-${imgId2}" class="image-loading">Loading image...</div>
+                                <img id="${imgId2}" src="" alt="Issue Photo 2" 
+                                    class="photo" style="${photo1 ? 'margin-top: 10px;' : ''}">
+                            `);
                     }
 
                     row.append(`
-                        <td style="width: 5%; text-align: center">${index + 1}</td>
-                        <td style="width: 25%">${issue.Description || ''}</td>
-                        ${photoCell.prop('outerHTML')}
-                        <td style="width: 30%; white-space: pre-line; text-align: justify;">${(issue['Action Plan'] || '').replace(/\r?\n/g, '<br>')}</td>               
-                        <td style="width: 10%; text-align: center">${utils.formatDate(issue.Deadline) || ''}</td>
-                        <td style="width: 15%">${issue.Result || ''}</td>
-                    `);
+                            <td style="width: 5%; text-align: center">${index + 1}</td>
+                            <td style="width: 15%">${issue.Item || ''}</td>
+                            <td style="width: 25%">${issue.Description || ''}</td>
+                            ${photoCell.prop('outerHTML')}
+                            <td style="width: 30%; white-space: pre-line; text-align: justify;">${(issue['Action Plan'] || '').replace(/\r?\n/g, '<br>')}</td>               
+                            <td style="width: 10%; text-align: center">${utils.formatDate(issue.Deadline) || ''}</td>
+                            <td style="width: 15%">${issue.Result || ''}</td>
+                        `);
                     tbody.append(row);
 
                     if (photo1) {
@@ -1155,6 +1291,7 @@
                         visibility: 'visible',
                         height: 'auto'
                     });
+                    hideEmptyRows();
                 })
                 .attr('src', imageUrl)
                 .css('cursor', 'pointer');
@@ -1182,6 +1319,103 @@
             document.title = originalTitle;
             saveButton.style.display = 'block';
         }
+
+        const adjustContentHeight = () => {
+            document.querySelectorAll('.section-table').forEach(sectionTable => {
+                const photoSection = sectionTable.querySelector('.photo-section');
+                const contentSection = sectionTable.querySelector('.content-section');
+
+                if (!photoSection || !contentSection) return;
+
+                const photoHeight = photoSection.offsetHeight;
+                const contentHeight = contentSection.offsetHeight;
+
+                // Sử dụng chiều cao lớn nhất
+                const maxHeight = Math.max(photoHeight, contentHeight);
+                if (maxHeight > 0) {
+                    photoSection.style.height = `${maxHeight}px`;
+                    contentSection.style.height = `${maxHeight}px`;
+                }
+            });
+        };
+
+        const hideEmptyRows = () => {
+            document.querySelectorAll('.report-section').forEach(section => {
+                const photoSection = section.querySelector('.photo-section');
+                const contentSection = section.querySelector('.content-section');
+                const rows = section.querySelectorAll('.content-section table tr');
+
+                // Count visible rows and check content
+                let visibleRows = 0;
+                let hasContent = false;
+                rows.forEach(row => {
+                    const statusCell = row.querySelector('[id^="section"]');
+                    if (statusCell) {
+                        const content = statusCell.textContent.trim();
+                        if (content === '' || content === '-') {
+                            row.style.display = 'none';
+                        } else {
+                            row.style.display = '';
+                            visibleRows++;
+                            hasContent = true;
+                        }
+                    }
+                });
+
+                // Check for photos
+                const photos = section.querySelectorAll('.photo[src]');
+                let hasPhotos = false;
+                photos.forEach(photo => {
+                    if (photo.src && photo.src !== 'about:blank' && photo.src !== window.location.href) {
+                        hasPhotos = true;
+                    }
+                });
+
+                // Handle section visibility
+                if (!hasContent && !hasPhotos) {
+                    section.style.display = 'none';
+                    return;
+                }
+
+                section.style.display = 'block';
+
+                // Adjust row heights if there are visible rows and photos
+                if (visibleRows > 0 && hasPhotos) {
+                    const photoHeight = photoSection.offsetHeight;
+                    const rowHeight = `${photoHeight / visibleRows}px`;
+
+                    // Apply height to visible rows only
+                    rows.forEach(row => {
+                        if (row.style.display !== 'none') {
+                            row.style.height = rowHeight;
+                            row.querySelectorAll('td').forEach(td => {
+                                td.style.height = rowHeight;
+                                td.style.verticalAlign = 'middle';
+                            });
+                        }
+                    });
+
+                    // Set content section height to match photo section
+                    contentSection.style.height = `${photoHeight}px`;
+                }
+            });
+        };
+
+        // Also add to image load events
+        document.querySelectorAll('.photo').forEach(img => {
+            img.addEventListener('load', () => {
+                setTimeout(adjustContentHeight, 100);
+            });
+        });
+
+        // Thêm vào domUpdater.updateMetrics
+        const originalUpdateMetrics = domUpdater.updateMetrics;
+        domUpdater.updateMetrics = (data) => {
+            originalUpdateMetrics(data);
+            hideEmptyRows();
+            // Chạy lại sau 500ms để đảm bảo tất cả ảnh đã load
+            setTimeout(hideEmptyRows, 500);
+        };
 
         // Main Application
         const app = {
