@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Marketing Visit Report System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+
+        * {
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        /* Xóa tất cả các định nghĩa border khác trong các class cụ thể */
+        .header-table td,
+        .store-info-table td,
+        .general_Comment td,
+        .section-table td {
+            border: 0.5px solid #24232373;
+        }
+
+        .section-table td {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+
+        /* Page Container */
+        .page {
+            width: 21cm;
+            height: auto;
+            padding: 1cm;
+            margin: 1cm auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Error Message */
+        .error-message {
+            background-color: #fee;
+            color: #c00;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #fcc;
+            border-radius: 4px;
+            display: none;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading:after {
+            content: "Loading...";
+            animation: dots 1s infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                content: "Loading.  ";
+            }
+
+            40% {
+                content: "Loading.. ";
+            }
+
+            60% {
+                content: "Loading...";
+            }
+
+            90%,
+            100% {
+                content: "Loading.  ";
+            }
+        }
+
+        /* Photo cell styles */
+        .photo-cell {
+            width: 120px !important;
+            /* Tăng width cố định */
+            height: auto;
+            /* Để tự điều chỉnh theo nội dung */
+            max-height: 400px;
+            /* Giới hạn chiều cao tối đa */
+        }
+
+        .photo-cell img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .photo-cell img:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Tables Styling */
+        /* .signature-table, */
+        .header-table,
+        .store-info-table,
+        .content-table,
+        .general_Comment {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .general_Comment {
+            margin-top: 20px;
+        }
+
+        /* .signature-table td, */
+        .header-table td,
+        .store-info-table td,
+        .content-table td,
+        .content-table th,
+        .general_Comment td {
+            border: 1px solid #24232373;
+            padding: 3px;
+            vertical-align: middle;
+        }
+
+        .content-table td {
+            padding: 3px;
+            vertical-align: middle;
+            white-space: pre-line;
+        }
+
+        .general_Comment td {
+            border: 1px solid #24232373;
+            padding: 6px;
+            vertical-align: middle;
+        }
+
+        /* Header Specific */
+        .logo {
+            width: 85px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .visit-info {
+            text-align: left;
+            white-space: nowrap;
+            line-height: 1.5;
+        }
+
+        /* Store Info Table */
+        .store-info-table tr td:first-child {
+            width: 35%;
+        }
+
+        .store-info-table tr td:nth-child(2) {
+            width: 35%;
+        }
+
+        .store-info-table tr td:last-child {
+            width: 30%;
+        }
+
+        /* Điều chỉnh border cho bảng section */
+        .section-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Content Table */
+        .section-header {
+            background-color: #cce5ff;
+            font-weight: bold;
+        }
+
+        .content-section {
+            vertical-align: top;
+            height: 100%;
+        }
+
+        .content-section td {
+            white-space: pre-line;
+        }
+
+        .content-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            height: 100%;
+            /* Add this */
+            display: table;
+            border: none;
+            /* Add this */
+        }
+
+        .content-section table tbody {
+
+            border: none !important;
+            /* Add this */
+        }
+
+        .content-section table tr {
+            height: 100%;
+            /* Add this */
+        }
+
+        .content-section table td {
+            vertical-align: middle;
+        }
+
+        .no-col {
+            width: 5%;
+            text-align: center;
+        }
+
+        .item-col {
+            width: 35%;
+            padding-left: 3px;
+        }
+
+        .status-col {
+            width: 40%;
+            padding-left: 3px;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-width: 40%;
+        }
+
+        /* Điều chỉnh cho phần photo */
+        .photo-section {
+            width: 20%;
+            padding: 4px;
+            vertical-align: top;
+        }
+
+        /* Điều chỉnh header section */
+        .section-header td {
+            background-color: #cce5ff;
+            font-weight: bold;
+            padding: 4px;
+        }
+
+        /* Điều chỉnh style cho ảnh */
+        .photo {
+            max-width: 100%;
+            margin-bottom: 8px;
+        }
+
+        /* Image Loading Indicator */
+        .image-loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            background: #f5f5f5;
+            margin: 5px 0;
+        }
+
+        /* Signature Table */
+        /* .signature-table {
+                margin-top: 40px;
+            }
+
+            .signature-table td {
+                width: 33.33%;
+                height: 100px;
+                text-align: center;
+                vertical-align: top;
+            }
+
+            .signature-table tr:first-child td {
+                background-color: #cce5ff;
+                height: auto;
+                font-weight: bold;
+            } */
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .image-loading {
+                display: none !important;
+            }
+        }
+
+        .save-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .save-button:hover {
+            background-color: #45a049;
+        }
+
+        .content-table tr {
+            display: table-row;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .content-table tr[style*="display: none"]+tr {
+            border-top: none;
+        }
+
+        @media print {
+            .page {
+                margin: 0;
+                padding: 0.5cm;
+                width: 100%;
+            }
+
+            .content-table {
+                page-break-inside: auto;
+            }
+
+            .content-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            .photo-cell {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            height: auto;
+            max-width: 80%;
+            max-height: 80vh;
+        }
+
+        #modalImage {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            margin: auto;
+            object-fit: contain;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: -40px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .photo {
+            cursor: pointer;
+        }
+
+        @media print {
+            .modal {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="imageModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" src="" alt="Enlarged image">
+        </div>
+    </div>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="loading" class="loading"></div>
+    <button id="saveButton" class="save-button no-print" onclick="printPDF()">In báo cáo</button>
+
+    <div id="reportPage" class="page" style="display: none;">
+        <!-- Header Table -->
+        <table class="header-table">
+            <tr>
+                <td style="width: 15%;">
+                    <img src="https://poalninh.github.io/jollibee-/pngegg.png" alt="Company Logo" class="logo">
+                </td>
+                <td style="width: 60%;">
+                    <div class="title">TRADE MARKETING VISIT REPORT</div>
+                </td>
+                <td style="width: 25%;">
+                    <div class="visit-info">
+                        VisitID: <span id="visitId">-</span><br>
+                        Date: <span id="visitDate">-</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Store Info Table -->
+        <table class="store-info-table">
+            <tr>
+                <td id="storeCode">Store Code: -</td>
+                <td id="region">Region: -</td>
+                <td id="assessor">Assessor: -</td>
+            </tr>
+            <tr>
+                <td id="storeName">Store Name: -</td>
+                <td id="area">Area: -</td>
+                <td id="storeRep">Store Representative: -</td>
+            </tr>
+        </table>
+
+        <!-- Section 1 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td style="width: 5%;">No</td>
+                    <td style="width: 35%;">Item</td>
+                    <td style="width: 40%;">Status/Assessment</td>
+                    <td style="width: 20%;">Photo</td>
+                </tr>
+                <tr class="section-header">
+                    <td colspan="4">1. Business Performance</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">1.1</td>
+                                <td class="item-col" id="B101">ADS</td>
+                                <td class="status-col" id="section1-1">ADS tăng trưởng 3% vs LY</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">1.2</td>
+                                <td class="item-col" id="B102">ADTC</td>
+                                <td class="status-col" id="section1-2">ADTC tăng trưởng 1% vs LY</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">1.3</td>
+                                <td class="item-col" id="B103">AC</td>
+                                <td class="status-col" id="section1-3">AC= 103k</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section1-photos">
+                            <div id="loading-pic1-1" class="image-loading">Loading...</div>
+                            <img id="pic1-1" class="photo" alt="Business Performance Photo 1">
+                            <div id="loading-pic1-2" class="image-loading">Loading...</div>
+                            <img id="pic1-2" class="photo" alt="Business Performance Photo 2">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">2. Channel Check</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">2.1</td>
+                                <td class="item-col" id="C201">Dine-in</td>
+                                <td class="status-col" id="section2-1">Kênh DI chủ lực</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">2.2</td>
+                                <td class="item-col" id="C202">Delivery</td>
+                                <td class="status-col" id="section2-2"></td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">2.3</td>
+                                <td class="item-col" id="C203">Internal Delivery</td>
+                                <td class="status-col" id="section2-3">App JBVN tăng trưởng tốt thông qua hoạt động tải
+                                    App</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section2-photos">
+                            <div id="loading-pic2-1" class="image-loading">Loading...</div>
+                            <img id="pic2-1" class="photo" alt="Channel Check Photo 1">
+                            <div id="loading-pic2-2" class="image-loading">Loading...</div>
+                            <img id="pic2-2" class="photo" alt="Channel Check Photo 2">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">3. AEC implementation</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">3.1</td>
+                                <td class="item-col" id="A301">Burger</td>
+                                <td class="status-col
+                                    " id="section3-1">Burger ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.2</td>
+                                <td class="item-col" id="A302">Chicken</td>
+                                <td class="status-col
+                                    " id="section3-2">Gà ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.3</td>
+                                <td class="item-col" id="A303">Pasta</td>
+                                <td class="status-col
+                                    " id="section3-3">Pasta ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.4</td>
+                                <td class="item-col" id="A304">Dessert</td>
+                                <td class="status-col
+                                    " id="section3-4">Dessert ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.5</td>
+                                <td class="item-col" id="A305">Drink</td>
+                                <td class="status-col
+                                    " id="section3-5">Drink ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.6</td>
+                                <td class="item-col" id="A306">Fries</td>
+                                <td class="status-col
+                                    " id="section3-6">Khoai tây ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.7</td>
+                                <td class="item-col" id="A307">Sauce</td>
+                                <td class="status-col
+                                    " id="section3-7">Sốt ngon</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.8</td>
+                                <td class="item-col" id="A308">Packaging</td>
+                                <td class="status-col
+                                    " id="section3-8">Bao bì đẹp</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.9</td>
+                                <td class="item-col" id="A309">Price</td>
+                                <td class="status-col
+                                    " id="section3-9">Giá cả hợp lý</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.10</td>
+                                <td class="item-col" id="A310">Promotion</td>
+                                <td class="status-col
+                                    " id="section3-10">Khuyến mãi hấp dẫn</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.11</td>
+                                <td class="item-col" id="A311">Menu</td>
+                                <td class="status-col
+                                    " id="section3-11">Menu đa dạng</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.12</td>
+                                <td class="item-col" id="A312">Combo</td>
+                                <td class="status-col
+                                    " id="section3-12">Combo hấp dẫn</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.13</td>
+                                <td class="item-col" id="A313">Quality</td>
+                                <td class="status-col
+                                    " id="section3-13">Chất lượng tốt</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">3.14</td>
+                                <td class="item-col" id="A314">Freshness</td>
+                                <td class="status-col
+                                    " id="section3-14">Tươi mới</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+
+                    <td class="photo-section">
+                        <div id="section3-photos">
+                            <div id="loading-pic3-1" class="image-loading">Loading...</div>
+                            <img id="pic3-1" class="photo" alt="Product Quality Photo 1">
+                            <div id="loading-pic3-2" class="image-loading">Loading...</div>
+                            <img id="pic3-2" class="photo" alt="Product Quality Photo 2">
+                            <div id="loading-pic3-3" class="image-loading">Loading...</div>
+                            <img id="pic3-3" class="photo" alt="Product Quality Photo 3">
+                            <div id="loading-pic3-4" class="image-loading">Loading...</div>
+                            <img id="pic3-4" class="photo" alt="Product Quality Photo 4">
+                            <div id="loading-pic3-5" class="image-loading">Loading...</div>
+                            <img id="pic3-5" class="photo" alt="Product Quality Photo 5">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">4. Trade MKT activity</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">4.1</td>
+                                <td class="item-col" id="T401">Service</td>
+                                <td class="status-col
+                                    " id="section4-1">Service tốt</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">4.2</td>
+                                <td class="item-col" id="T402">Cleanliness</td>
+                                <td class="status-col
+                                    " id="section4-2">Sạch sẽ</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">4.3</td>
+                                <td class="item-col" id="T403">Speed</td>
+                                <td class="status-col
+                                    " id="section4-3">Nhanh chóng</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">4.4</td>
+                                <td class="item-col" id="T404">Accuracy</td>
+                                <td class="status-col
+                                    " id="section4-4">Chính xác</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section4-photos">
+                            <div id="loading-pic4-1" class="image-loading">Loading...</div>
+                            <img id="pic4-1" class="photo" alt="Service Quality Photo 1">
+                            <div id="loading-pic4-2" class="image-loading">Loading...</div>
+                            <img id="pic4-2" class="photo" alt="Service Quality Photo 2">
+                            <div id="loading-pic4-3" class="image-loading">Loading...</div>
+                            <img id="pic4-3" class="photo" alt="Service Quality Photo 3">
+                            <div id="loading-pic4-4" class="image-loading">Loading...</div>
+                            <img id="pic4-4" class="photo" alt="Service Quality Photo 4">
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <!-- Section 5 -->
+
+        <div class="report-section">
+            <!-- Header -->
+            <table class="section-table">
+                <tr class="section-header">
+                    <td colspan="4">5. RTA Check</td>
+                </tr>
+            </table>
+
+            <!-- Content và Photo tách riêng -->
+            <table class="section-table">
+                <tr>
+                    <!-- Phần content -->
+                    <td class="content-section">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="no-col">5.1</td>
+                                <td class="item-col" id="R501">Hygiene</td>
+                                <td class="status-col
+                                    " id="section5-1">Vệ sinh tốt</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">5.2</td>
+                                <td class="item-col" id="R502">Safety</td>
+                                <td class="status-col
+                                    " id="section5-2">An toàn</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">5.3</td>
+                                <td class="item-col" id="R503">Social Distancing</td>
+                                <td class="status-col
+                                    " id="section5-3">Giữ khoảng cách</td>
+                            </tr>
+                            <tr>
+                                <td class="no-col">5.4</td>
+                                <td class="item-col" id="R504">PPE</td>
+                                <td class="status-col
+                                    " id="section5-4">Đủ PPE</td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <!-- Phần photo - tách riêng -->
+                    <td class="photo-section">
+                        <div id="section5-photos">
+                            <div id="loading-pic5-1" class="image-loading">Loading...</div>
+                            <img id="pic5-1" class="photo" alt="Hygiene & Safety Photo 1">
+                            <div id="loading-pic5-2" class="image-loading">Loading...</div>
+                            <img id="pic5-2" class="photo" alt="Hygiene & Safety Photo 2">
+                            <div id="loading-pic5-3" class="image-loading">Loading...</div>
+                            <img id="pic5-3" class="photo" alt="Hygiene & Safety Photo 3">
+                            <div id="loading-pic5-4" class="image-loading">Loading...</div>
+                            <img id="pic5-4" class="photo" alt="Hygiene & Safety Photo 4">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <table class="general_Comment">
+            <tr>
+                <td style="width: 25%; background-color: #cce5ff; font-weight: bold;">General Comment:</td>
+                <td style="width: 75%; background-color: #fff;">
+                    <span id="generalComment">-</span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Add new Diagnosis & Suggestion table -->
+        <table class="content-table">
+            <span style="font-weight: bold;">Diagnosis & Suggestion </span>
+            <tr class="section-header">
+                <th style="width: 5%;">No</th>
+                <th style="width: 15%;">Item</th>
+                <th style="width: 25%;">Finding</th>
+                <th style="width: 15%;">Photo</th>
+                <th style="width: 30%;">Action Plan</th>
+                <th style="width: 10%;">Deadline</th>
+                <th style="width: 15%;">Result</th>
+            </tr>
+            <tbody id="issueTrackingBody">
+                <!-- Issues will be populated here dynamically -->
+            </tbody>
+        </table>
+
+        <!-- Signatures Table -->
+        <!-- <table class="signature-table">
+                <tr>
+                    <td>Approved by:</td>
+                    <td>Store Manager</td>
+                    <td>Prepared by:</td>
+                </tr>
+                <tr>
+                    <td id="approvedBy">-</td>
+                    <td id="storeManager">-</td>
+                    <td id="preparedBy">-</td>
+                </tr>
+            </table> -->
+    </div>
+
+    <script>
+
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        }, false);
+
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+        };
+
+        // Configuration
+        const CONFIG = {
+            api: {
+                region: 'www',
+                appId: '9e857529-b31a-4452-9791-f3f10b95aaad',
+                accessKey: 'V2-hCB7E-rgYoG-x4o52-5DrGd-1tZ0k-QwoYJ-xksUy-BASob',
+                tableName: 'Report'
+            }
+        };
+
+        // Standard table configuration
+        const standardConfig = {
+            api: {
+                region: 'www',
+                appId: CONFIG.api.appId,
+                accessKey: CONFIG.api.accessKey,
+                tableName: 'Standard'
+            }
+        };
+
+        // Add encryption function using base64 and simple shift
+        function encryptId(reportId) {
+            return btoa(reportId).split('').reverse().join('');
+        }
+
+        function decryptId(encryptedId) {
+            try {
+                return atob(encryptedId.split('').reverse().join(''));
+            } catch {
+                return '';
+            }
+        }
+
+        // Hàm xử lý nội dung
+        function updateContent(sectionId, data) {
+            // Cập nhật text content
+            for (let i = 1; i <= 5; i++) {
+                const elementId = `section${sectionId}-${i}`;
+                const content = data[`${sectionId}.${i}`];
+                if (content) {
+                    document.getElementById(elementId).textContent = content;
+                }
+            }
+        }
+
+        // Hàm xử lý ảnh
+        function updatePhotos(sectionId, data) {
+            // Cập nhật photos
+            for (let i = 1; i <= 2; i++) {
+                const imgId = `pic${sectionId}-${i}`;
+                const loadingId = `loading-${imgId}`;
+                const imageUrl = data[`Pic${sectionId}.${i}`];
+
+                if (imageUrl) {
+                    const img = document.getElementById(imgId);
+                    const loading = document.getElementById(loadingId);
+
+                    loading.style.display = 'block';
+                    img.onload = function () {
+                        this.style.display = 'block';
+                        loading.style.display = 'none';
+                    };
+                    img.src = imageUrl;
+                }
+            }
+        }
+
+        // Utility Functions
+        const utils = {
+            showError: (message) => {
+                $('#errorMessage').text(message).show();
+                $('#loading').hide();
+            },
+            showLoading: () => {
+                $('#loading').show();
+                $('#errorMessage').hide();
+                $('#reportPage').hide();
+            },
+            hideLoading: () => {
+                $('#loading').hide();
+                $('#reportPage').show();
+            },
+            getUrlParameter: (name) => {
+                try {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const rawId = urlParams.get('reportId');
+
+                    if (name === 'reportId' && rawId) {
+                        if (rawId.includes('-')) {
+                            const encodedId = encodeId(rawId);
+                            history.replaceState(null, '', `?reportId=${encodedId}`);
+                            return rawId;
+                        }
+                        return decodeId(rawId);
+                    }
+                    return rawId;
+                } catch (e) {
+                    console.error('Error processing URL parameter:', e);
+                    return '';
+                }
+            },
+            formatDate: (dateString) => {
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
+        };
+
+        // Hàm mã hóa ID
+        function encodeId(reportId) {
+            return btoa(reportId).split('').reverse().join('');
+        }
+
+        // Hàm giải mã ID
+        function decodeId(encodedId) {
+            try {
+                return atob(encodedId.split('').reverse().join(''));
+            } catch {
+                return encodedId;
+            }
+        }
+
+        // API Service
+        const apiService = {
+            getImageUrl: (fileName) => {
+                if (!fileName) return '';
+                const cleanFileName = fileName.trim();
+                const baseUrl = 'https://www.appsheet.com/template/gettablefileurl';
+                const params = new URLSearchParams({
+                    appName: "JolliBeeAudit-6196158",
+                    tableName: 'IssueTracking',
+                    fileName: cleanFileName
+                });
+                return `${baseUrl}?${params.toString()}`;
+            },
+
+            getReportData: async (reportId) => {
+                const apiUrl = `https://${CONFIG.api.region}.appsheet.com/api/v2/apps/${CONFIG.api.appId}/tables/${CONFIG.api.tableName}/Action`;
+
+                try {
+                    const response = await $.ajax({
+                        url: apiUrl,
+                        method: 'POST',
+                        headers: {
+                            'ApplicationAccessKey': CONFIG.api.accessKey,
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify({
+                            Action: 'Find',
+                            Properties: {
+                                Locale: 'vi-VN',
+                                Timezone: 'Asia/Ho_Chi_Minh'
+                            }
+                        })
+                    });
+
+                    if (!Array.isArray(response)) {
+                        throw new Error('Invalid API response format');
+                    }
+
+                    const report = response.find(row => row['Report ID'] === reportId);
+
+                    if (!report) {
+                        throw new Error(`Không tìm thấy báo cáo với ID: ${reportId}`);
+                    }
+
+                    // Process image URLs
+                    const imageFields = [
+                        'Pic1.1', 'Pic1.2', 'Pic2.1', 'Pic2.2',
+                        'Pic3.1', 'Pic3.2', 'Pic3.3', 'Pic3.4', 'Pic3.5',
+                        'Pic4.1', 'Pic4.2', 'Pic4.3', 'Pic4.4', 'Pic4.5',
+                        'Pic5.1', 'Pic5.2', 'Pic5.3', 'Pic5.4', 'Pic5.5'
+                    ];
+
+                    imageFields.forEach(field => {
+                        if (report[field]) {
+                            report[field] = apiService.getImageUrl(report[field]);
+                        }
+                    });
+
+                    return report;
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw new Error(`Lỗi khi tải dữ liệu: ${error.message}`);
+                }
+            },
+
+            getIssueTrackingData: async (reportId) => {
+                const apiUrl = `https://${CONFIG.api.region}.appsheet.com/api/v2/apps/${CONFIG.api.appId}/tables/IssueTracking/Action`;
+
+                try {
+                    const response = await $.ajax({
+                        url: apiUrl,
+                        method: 'POST',
+                        headers: {
+                            'ApplicationAccessKey': CONFIG.api.accessKey,
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify({
+                            Action: 'Find',
+                            Properties: {
+                                Locale: 'vi-VN',
+                                Timezone: 'Asia/Ho_Chi_Minh'
+                            },
+                            Filters: [{
+                                Property: 'Report ID',
+                                FilterOperator: 'Equal',
+                                Value: reportId
+                            }]
+                        })
+                    });
+
+                    if (!Array.isArray(response)) {
+                        return [];
+                    }
+
+                    return response.filter(issue => issue['Report ID'] === reportId);
+
+                } catch (error) {
+                    console.error('Lỗi khi tải dữ liệu IssueTracking:', error);
+                    return [];
+                }
+            }
+        };
+
+        // Function to get Standard table data
+        const getStandardData = async () => {
+            const apiUrl = `https://${standardConfig.api.region}.appsheet.com/api/v2/apps/${standardConfig.api.appId}/tables/${standardConfig.api.tableName}/Action`;
+
+            try {
+                const response = await $.ajax({
+                    url: apiUrl,
+                    method: 'POST',
+                    headers: {
+                        'ApplicationAccessKey': standardConfig.api.accessKey,
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({
+                        Action: 'Find',
+                        Properties: {
+                            Locale: 'vi-VN',
+                            Timezone: 'Asia/Ho_Chi_Minh'
+                        }
+                    })
+                });
+
+                if (!Array.isArray(response)) {
+                    throw new Error('Invalid API response format');
+                }
+
+                // Convert response to standardData format
+                const standardData = {};
+                response.forEach(row => {
+                    if (row.Code && row.Item) {
+                        standardData[row.Code] = row.Item;
+                    }
+                });
+
+                return standardData;
+            } catch (error) {
+                console.error('Error fetching Standard data:', error);
+                throw error;
+            }
+        };
+
+        // DOM Update Functions
+        const domUpdater = {
+            updateBasicInfo: (data) => {
+                $('#visitId').text(data['Report ID'] || '');
+                $('#visitDate').text(utils.formatDate(data['Visit Date']));
+                $('#storeCode').html(`Store Code: <strong>${data['Store Code'] || ''}</strong>`);
+                $('#region').html(`Region: <strong>${data['Region'] || ''}</strong>`);
+                $('#assessor').html(`Assessor: <strong>${data['Assessor name'] || ''}</strong>`);
+                $('#storeName').html(`Store Name: <strong>${data['Store Name'] || ''}</strong>`);
+                $('#area').html(`Area: <strong>${data['Area'] || ''}</strong>`);
+                $('#storeRep').html(`Store Representative: <strong>${data['Store Representative Full Name'] || ''}</strong>`);
+            },
+
+            updateStandardItems: () => {
+                if (app.standardData) {
+                    Object.keys(app.standardData).forEach(code => {
+                        const element = document.getElementById(code);
+                        if (element) {
+                            element.textContent = app.standardData[code];
+                        }
+                    });
+                }
+            },
+
+            updateMetrics: (data) => {
+                domUpdater.updateStandardItems();
+
+                const updateSection = (sectionNum, count) => {
+                    for (let i = 1; i <= count; i++) {
+                        const key = sectionNum === 3 ?
+                            `${sectionNum}.${String(i).padStart(2, '0')}` :
+                            `${sectionNum}.${i}`;
+                        const value = data[key] || '';
+                        $(`#section${sectionNum}-${i}`).text(value);
+                    }
+                };
+
+                // Cập nhật từng phần
+                updateSection(1, 3);
+                updateSection(2, 5);
+                updateSection(3, 14);
+                updateSection(4, 4);
+                updateSection(5, 4);
+
+                // Cập nhật ảnh
+                domUpdater.updateImage('pic1-1', data['Pic1.1']);
+                domUpdater.updateImage('pic1-2', data['Pic1.2']);
+                domUpdater.updateImage('pic2-1', data['Pic2.1']);
+                domUpdater.updateImage('pic2-2', data['Pic2.2']);
+                domUpdater.updateImage('pic3-1', data['Pic3.1']);
+                domUpdater.updateImage('pic3-2', data['Pic3.2']);
+                domUpdater.updateImage('pic3-3', data['Pic3.3']);
+                domUpdater.updateImage('pic3-4', data['Pic3.4']);
+                domUpdater.updateImage('pic3-5', data['Pic3.5']);
+                domUpdater.updateImage('pic4-1', data['Pic4.1']);
+                domUpdater.updateImage('pic4-2', data['Pic4.2']);
+                domUpdater.updateImage('pic4-3', data['Pic4.3']);
+                domUpdater.updateImage('pic4-4', data['Pic4.4']);
+                domUpdater.updateImage('pic4-5', data['Pic4.5']);
+                domUpdater.updateImage('pic5-1', data['Pic5.1']);
+                domUpdater.updateImage('pic5-2', data['Pic5.2']);
+                domUpdater.updateImage('pic5-3', data['Pic5.3']);
+                domUpdater.updateImage('pic5-4', data['Pic5.4']);
+                domUpdater.updateImage('pic5-5', data['Pic5.5']);
+
+                // Cập nhật general comment
+                const formattedComment = (data['General Comment'] || '').replace(/\r?\n/g, '<br>');
+                $('#generalComment').html(formattedComment);
+
+                // Gọi hàm ẩn dòng trống
+                hideEmptyRows();
+                setTimeout(hideEmptyRows, 500);
+            },
+
+            updateSignatures: (data) => {
+                $('#approvedBy').text(data['Approved by name'] || '');
+                $('#storeManager').text(data['Store Manager'] || '');
+                $('#preparedBy').text(data['Prepared by name'] || '');
+            },
+
+            updateIssueTracking: (issues) => {
+                const tbody = $('#issueTrackingBody');
+                tbody.empty();
+
+                issues.forEach((issue, index) => {
+                    const row = $('<tr>');
+                    const photoCell = $('<td class="photo-cell">');
+
+                    const photo1 = issue['Photo 1'];
+                    const photo2 = issue['Photo 2'];
+
+                    if (photo1) {
+                        const imgId1 = `issue-img-${index}-1`;
+                        photoCell.append(`
+                                <div id="loading-${imgId1}" class="image-loading">Loading image...</div>
+                                <img id="${imgId1}" src="" alt="Issue Photo 1" class="photo">
+                            `);
+                    }
+
+                    if (photo2) {
+                        const imgId2 = `issue-img-${index}-2`;
+                        photoCell.append(`
+                                <div id="loading-${imgId2}" class="image-loading">Loading image...</div>
+                                <img id="${imgId2}" src="" alt="Issue Photo 2" 
+                                    class="photo" style="${photo1 ? 'margin-top: 10px;' : ''}">
+                            `);
+                    }
+
+                    row.append(`
+                            <td style="width: 5%; text-align: center">${index + 1}</td>
+                            <td style="width: 15%">${issue.Item || ''}</td>
+                            <td style="width: 25%">${issue.Description || ''}</td>
+                            ${photoCell.prop('outerHTML')}
+                            <td style="width: 30%; white-space: pre-line;">${(issue['Action Plan'] || '').replace(/\r?\n/g, '<br>')}</td>               
+                            <td style="width: 10%; text-align: center">${utils.formatDate(issue.Deadline) || ''}</td>
+                            <td style="width: 15%">${issue.Result || ''}</td>
+                        `);
+                    tbody.append(row);
+
+                    if (photo1) {
+                        domUpdater.updateImage(`issue-img-${index}-1`, apiService.getImageUrl(photo1));
+                    }
+                    if (photo2) {
+                        domUpdater.updateImage(`issue-img-${index}-2`, apiService.getImageUrl(photo2));
+                    }
+                });
+            },
+
+
+        };
+
+        // Update the image handling function
+        domUpdater.updateImage = (imgId, imageUrl) => {
+            const $img = $(`#${imgId}`);
+            const $loading = $(`#loading-${imgId}`);
+            const $photoCell = $img.closest('.photo-cell');
+
+            if (!imageUrl) {
+                $img.hide();
+                $loading.hide();
+                return;
+            }
+
+            $loading.show();
+            $photoCell.css('visibility', 'visible');
+
+            // Create a wrapper with link
+            if (!$img.parent().is('a')) {
+                $img.wrap(`<a href="${imageUrl}" target="_blank"></a>`);
+            }
+
+            $img
+                .on('error', function () {
+                    $(this).hide();
+                    $loading.hide();
+                })
+                .on('load', function () {
+                    $(this).show();
+                    $loading.hide();
+                    $(this).closest('.photo-cell').css({
+                        visibility: 'visible',
+                        height: 'auto'
+                    });
+                    hideEmptyRows();
+                })
+                .attr('src', imageUrl)
+                .css('cursor', 'pointer');
+
+            // Update the wrapper href
+            $img.parent('a').attr('href', imageUrl);
+        };
+
+        // Add this to your printPDF function
+        function printPDF() {
+            const reportId = utils.getUrlParameter('reportId');
+            if (!reportId) {
+                alert('Không tìm thấy Report ID');
+                return;
+            }
+
+            const saveButton = document.getElementById('saveButton');
+            saveButton.style.display = 'none';
+
+            const originalTitle = document.title;
+            document.title = reportId;
+
+            window.print();
+
+            document.title = originalTitle;
+            saveButton.style.display = 'block';
+        }
+
+        const adjustContentHeight = () => {
+            document.querySelectorAll('.section-table').forEach(sectionTable => {
+                const photoSection = sectionTable.querySelector('.photo-section');
+                const contentSection = sectionTable.querySelector('.content-section');
+
+                if (!photoSection || !contentSection) return;
+
+                const photoHeight = photoSection.offsetHeight;
+                const contentHeight = contentSection.offsetHeight;
+
+                // Sử dụng chiều cao lớn nhất
+                const maxHeight = Math.max(photoHeight, contentHeight);
+                if (maxHeight > 0) {
+                    photoSection.style.height = `${maxHeight}px`;
+                    contentSection.style.height = `${maxHeight}px`;
+                }
+            });
+        };
+
+        const hideEmptyRows = () => {
+            document.querySelectorAll('.report-section').forEach(section => {
+                const photoSection = section.querySelector('.photo-section');
+                const contentSection = section.querySelector('.content-section');
+                const rows = section.querySelectorAll('.content-section table tr');
+
+                // Count visible rows and check content
+                let visibleRows = 0;
+                let hasContent = false;
+                rows.forEach(row => {
+                    const statusCell = row.querySelector('[id^="section"]');
+                    if (statusCell) {
+                        const content = statusCell.textContent.trim();
+                        if (content === '' || content === '-') {
+                            row.style.display = 'none';
+                        } else {
+                            row.style.display = '';
+                            visibleRows++;
+                            hasContent = true;
+                        }
+                    }
+                });
+
+                // Check for photos
+                const photos = section.querySelectorAll('.photo[src]');
+                let hasPhotos = false;
+                photos.forEach(photo => {
+                    if (photo.src && photo.src !== 'about:blank' && photo.src !== window.location.href) {
+                        hasPhotos = true;
+                    }
+                });
+
+                // Handle section visibility
+                if (!hasContent && !hasPhotos) {
+                    section.style.display = 'none';
+                    return;
+                }
+
+                section.style.display = 'block';
+
+                // Adjust row heights if there are visible rows and photos
+                if (visibleRows > 0 && hasPhotos) {
+                    const photoHeight = photoSection.offsetHeight;
+                    const rowHeight = `${photoHeight / visibleRows}px`;
+
+                    // Apply height to visible rows only
+                    rows.forEach(row => {
+                        if (row.style.display !== 'none') {
+                            row.style.height = rowHeight;
+                            row.querySelectorAll('td').forEach(td => {
+                                td.style.height = rowHeight;
+                                td.style.verticalAlign = 'middle';
+                            });
+                        }
+                    });
+
+                    // Set content section height to match photo section
+                    contentSection.style.height = `${photoHeight}px`;
+                }
+            });
+        };
+
+        // Also add to image load events
+        document.querySelectorAll('.photo').forEach(img => {
+            img.addEventListener('load', () => {
+                setTimeout(adjustContentHeight, 100);
+            });
+        });
+
+        // Thêm vào domUpdater.updateMetrics
+        const originalUpdateMetrics = domUpdater.updateMetrics;
+        domUpdater.updateMetrics = (data) => {
+            originalUpdateMetrics(data);
+            hideEmptyRows();
+            // Chạy lại sau 500ms để đảm bảo tất cả ảnh đã load
+            setTimeout(hideEmptyRows, 500);
+        };
+
+        // Main Application
+        const app = {
+            standardData: null,
+
+            init: async () => {
+                const reportId = utils.getUrlParameter('reportId');
+
+                if (!reportId) {
+                    utils.showError('Vui lòng cung cấp Report ID trong URL');
+                    return;
+                }
+
+                utils.showLoading();
+
+                try {
+                    app.standardData = await getStandardData();
+                    const data = await apiService.getReportData(reportId);
+                    domUpdater.updateBasicInfo(data);
+                    domUpdater.updateMetrics(data);
+                    domUpdater.updateSignatures(data);
+
+                    const issueData = await apiService.getIssueTrackingData(reportId);
+                    domUpdater.updateIssueTracking(issueData);
+
+                    utils.hideLoading();
+
+                    setTimeout(() => {
+                        const reportId = utils.getUrlParameter('reportId');
+                        if (reportId) {
+                            document.title = reportId;
+                            window.print();
+                        }
+                    }, 1000);
+                } catch (error) {
+                    utils.showError(error.message);
+                }
+            }
+        };
+
+        // Initialize when document is ready
+        $(document).ready(app.init);
+
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        function showModal(imgSrc) {
+            modal.style.display = 'block';
+            modalImg.src = imgSrc;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function addClickEvents() {
+                const photos = document.querySelectorAll('.photo');
+                photos.forEach(photo => {
+                    photo.addEventListener('click', function (e) {
+                        e.preventDefault(); // Prevent default click behavior
+                        if (this.src && this.style.display !== 'none') {
+                            window.location.href = this.src;  // Mở hình trong tab hiện tại
+                        }
+                    });
+                    photo.style.cursor = 'pointer';
+                });
+            }
+
+            // Initial binding
+            addClickEvents();
+
+            // Add observer to handle dynamically added images
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.addedNodes.length) {
+                        addClickEvents();
+                    }
+                });
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
